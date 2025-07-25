@@ -2,6 +2,8 @@
 
 一个基于千问大模型的多格式翻译API服务，兼容DeepL和DeepLX API格式。
 
+> 👋 **关注作者**: [@zhaopengme](https://x.com/zhaopengme) - 获取更多AI工具和技术分享
+
 ## 功能特性
 
 - 🌐 支持多种API格式：DeepL、DeepLX、原生格式
@@ -227,4 +229,9 @@ MIT License
 
 ## 联系方式
 
-如有问题或建议，请提交Issue。
+- 📧 如有问题或建议，请提交Issue
+- 🐦 关注我的Twitter获取更多AI工具分享: [@zhaopengme](https://x.com/zhaopengme)
+
+---
+
+⭐ 如果这个项目对你有帮助，请考虑给个Star支持一下！
