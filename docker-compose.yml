@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  qwenmtapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      # 认证配置
+      - AUTH_ENABLED=false  # 设置为true启用认证
+      - API_KEY=sk-your-api-key-here  # 单个API密钥
+      # - API_KEYS=sk-key1,sk-key2,sk-key3  # 多个API密钥（逗号分隔）
+      
+      # 应用配置
+      - GIN_MODE=release
+      - TZ=Asia/Shanghai
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.qwenmtapi.rule=Host(`your-domain.com`)"
+      - "traefik.http.routers.qwenmtapi.entrypoints=websecure"
+      - "traefik.http.routers.qwenmtapi.tls.certresolver=letsencrypt"
+      - "traefik.http.services.qwenmtapi.loadbalancer.server.port=8080"
+    networks:
+      - qwenmtapi_network
+
+  # 可选：添加Nginx反向代理
+  # nginx:
+  #   image: nginx:alpine
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
+  #     - ./ssl:/etc/nginx/ssl:ro
+  #   depends_on:
+  #     - qwenmtapi
+  #   restart: unless-stopped
+  #   networks:
+  #     - qwenmtapi_network
+
+networks:
+  qwenmtapi_network:
+    driver: bridge
+
+# 可选：持久化存储（如果需要日志或配置文件持久化）
+# volumes:
+#   qwenmtapi_logs:
+#     driver: local
