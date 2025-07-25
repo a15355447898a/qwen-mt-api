@@ -12,6 +12,10 @@ func main() {
 	s := g.Server()
 	translateCtrl := controller.NewTranslateController()
 	authMiddleware := middleware.NewAuthMiddleware()
+	corsMiddleware := middleware.NewCORSMiddleware()
+	
+	// 添加全局CORS中间件
+	s.Use(corsMiddleware.Middleware)
 	
 	s.BindHandler("/", func(r *ghttp.Request) {
 		r.Response.WriteJson(g.Map{
