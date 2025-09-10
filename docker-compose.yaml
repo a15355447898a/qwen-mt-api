@@ -2,7 +2,7 @@ version: '3.8' # Docker Compose 文件格式版本，建议使用最新稳定版
 
 services:
   qwen-mt-api:
-    build: . # 指定 Dockerfile 的路径为当前目录，Docker Compose 会在这里找到 Dockerfile 并构建镜像
+    image: a15355447898a/qwen-mt-api
     container_name: qwen-mt-api-service
     ports:
       - "8086:8080" # 将宿主机的 8080 端口映射到容器的 8080 端口
