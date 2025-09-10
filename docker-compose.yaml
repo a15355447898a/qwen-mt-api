@@ -1,0 +1,33 @@
+version: '3.8' # Docker Compose 文件格式版本，建议使用最新稳定版
+
+services:
+  qwen-mt-api:
+    build: . # 指定 Dockerfile 的路径为当前目录，Docker Compose 会在这里找到 Dockerfile 并构建镜像
+    container_name: qwen-mt-api-service
+    ports:
+      - "8086:8080" # 将宿主机的 8080 端口映射到容器的 8080 端口
+    environment:
+      # 在这里配置你的环境变量
+      # AUTH_ENABLED: "false" # 默认不启用认证。启用认证请改为 "true"
+      # API_KEY: "sk-your-single-key" # 如果只使用一个 API 密钥
+      # API_KEYS: "sk-key1,sk-key2,sk-key3" # 如果使用多个 API 密钥，用逗号分隔
+      # GIN_MODE: "debug" # GoFrame/Gin 模式，可选 "debug" 或 "release"。生产环境推荐 "release"
+      # TZ: "Asia/Shanghai" # 设置容器的时区，例如东八区
+
+      # 示例1：默认配置 (不启用认证，GIN_MODE 留给 GoFrame/Gin 默认，通常是 debug)
+      # 这条无需特别配置，项目默认不启用认证
+      # 当然，你也可以显式写上：
+      AUTH_ENABLED: "false"
+
+      # 示例2：启用认证并指定多个 API 密钥（推荐用于生产环境）
+      # 如果要启用此配置，请注释掉上面的示例1，并取消下面行的注释，然后替换为你的实际密钥
+      # AUTH_ENABLED: "true"
+      # API_KEYS: "sk-prod-key-1,sk-prod-key-2"
+      # GIN_MODE: "release"
+      # TZ: "Asia/Shanghai" # 生产环境通常会指定时区
+
+    restart: unless-stopped # 容器在退出时总是重启，除非 Docker daemon 停止或容器被手动停止
+
+# 如果你需要持续化存储日志或其他数据，可以添加 volumes
+# volumes:
+#   - ./logs:/app/logs # 示例：将容器内的 /app/logs 映射到宿主机的 ./logs 目录
